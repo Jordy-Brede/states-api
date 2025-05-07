@@ -5,7 +5,4 @@
 
 
 
-## 🌐 Deployed App
-🔗 https://your-project-name.glitch.me/
-
 
