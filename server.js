@@ -17,13 +17,36 @@ app.use(express.json());
 app.use('/states', statesRoutes);
 
 app.get('/', (req, res) => {
-  res.send('<h1>US States API</h1>');
-});
-
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>US States API</title>
+        </head>
+        <body>
+          <h1>Welcome to the US States API</h1>
+          <p>Use /states to access state data.</p>
+        </body>
+      </html>
+    `);
+  });
+  
 app.use('*', errorHandler);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
+app.all('*', (req, res) => {
+    res.status(404).send(`
+      <!DOCTYPE html>
+      <html>
+        <head><title>404 - Not Found</title></head>
+        <body>
+          <h1>404 - Page Not Found</h1>
+          <p>The requested URL ${req.originalUrl} was not found on this server.</p>
+        </body>
+      </html>
+    `);
+  });
   

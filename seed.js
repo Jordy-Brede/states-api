@@ -1,60 +1,65 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const State = require('./models/States');
+require('dotenv').config();
 
-dotenv.config();
+const seedStates = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('MongoDB connected');
 
-const seedData = [
-  {
-    stateCode: 'KS',
-    funfacts: [
-      'Kansas is known for having the geographic center of the 48 contiguous United States.',
-      'Dodge City, KS, is the windiest city in the U.S.',
-      'The first woman mayor in the U.S. was elected in Argonia, KS in 1887.'
-    ]
-  },
-  {
-    stateCode: 'MO',
-    funfacts: [
-      'Missouri is home to the world’s largest chess piece in St. Louis.',
-      'The ice cream cone was invented at the 1904 World’s Fair in St. Louis.',
-      'Mark Twain, the famous author, was born in Missouri.'
-    ]
-  },
-  {
-    stateCode: 'OK',
-    funfacts: [
-      'Oklahoma has more man-made lakes than any other state.',
-      'The state capitol has an oil well under it.',
-      'The parking meter was invented in Oklahoma City in 1935.'
-    ]
-  },
-  {
-    stateCode: 'NE',
-    funfacts: [
-      'Nebraska has more miles of river than any other state.',
-      'The Reuben sandwich originated in Omaha.',
-      'Nebraska is the only state with a unicameral legislature.'
-    ]
-  },
-  {
-    stateCode: 'CO',
-    funfacts: [
-      'Colorado is the only state to turn down the Olympics (1976).',
-      'The world’s largest flat-top mountain is in Colorado: Grand Mesa.',
-      'Denver is exactly one mile high.'
-    ]
+    // Optional: clear existing data
+    await State.deleteMany({});
+
+    // Seed fun facts for specific states
+    await State.insertMany([
+      {
+        stateCode: 'KS',
+        funfacts: [
+          'Kansas has more cows than people.',
+          'The geographic center of the contiguous U.S. is in Kansas.',
+          'It’s illegal to serve wine in teacups in Kansas.'
+        ]
+      },
+      {
+        stateCode: 'NE',
+        funfacts: [
+          'Nebraska has more miles of river than any other state.',
+          'The Reuben sandwich was invented in Omaha.',
+          'Kool-Aid was invented in Hastings, Nebraska.'
+        ]
+      },
+      {
+        stateCode: 'OK',
+        funfacts: [
+          'Oklahoma has more man-made lakes than any other state.',
+          'The parking meter was invented in Oklahoma City.',
+          'The state meal of Oklahoma includes fried okra and chicken-fried steak.'
+        ]
+      },
+      {
+        stateCode: 'MO',
+        funfacts: [
+          'Missouri is known as the "Show Me State."',
+          'St. Louis was the first American city to host the Olympics (1904).',
+          'Missouri has more than 6,000 known caves.'
+        ]
+      },
+      {
+        stateCode: 'CO',
+        funfacts: [
+          'Colorado has the highest average elevation of any state.',
+          'The cheeseburger was trademarked in Denver in 1935.',
+          'Colorado is home to the world’s largest natural hot springs swimming pool.'
+        ]
+      }
+    ]);
+
+    console.log('✅ Fun facts seeded successfully');
+    mongoose.disconnect();
+  } catch (err) {
+    console.error('Seeding failed:', err);
+    mongoose.disconnect();
   }
-];
+};
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(async () => {
-    await State.deleteMany(); // Clear previous entries
-    await State.insertMany(seedData);
-    console.log('Database seeded successfully!');
-    process.exit();
-  })
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
+seedStates();
