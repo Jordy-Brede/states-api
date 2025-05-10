@@ -2,6 +2,8 @@ const State = require('../models/States');
 const statesData = require('../statesData.json');
 
 
+
+
 const getMergedStateData = async () => {
     const dbStates = await State.find();
     return statesData.map(state => {
