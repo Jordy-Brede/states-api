@@ -33,10 +33,6 @@ app.get('/', (req, res) => {
   
 app.use('*', errorHandler);
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
 app.all('*', (req, res) => {
     res.status(404).send(`
       <!DOCTYPE html>
@@ -49,4 +45,10 @@ app.all('*', (req, res) => {
       </html>
     `);
   });
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+
   
