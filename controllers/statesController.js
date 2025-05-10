@@ -1,6 +1,9 @@
 const State = require('../models/States');
 const statesData = require('../statesData.json');
-
+const isValidStateCode = (code) => {
+    return statesData.some(state => state.code.toUpperCase() === code.toUpperCase());
+  };
+  
 
 
 
@@ -36,6 +39,11 @@ const getMergedStateData = async () => {
 
   const getRandomFunFact = async (req, res) => {
     const code = req.params.state.toUpperCase();
+  
+    if (!isValidStateCode(code)) {
+      return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
+    }
+  
     const dbState = await State.findOne({ stateCode: code });
   
     if (!dbState || !dbState.funfacts || dbState.funfacts.length === 0) {
@@ -45,6 +53,7 @@ const getMergedStateData = async () => {
     const fact = dbState.funfacts[Math.floor(Math.random() * dbState.funfacts.length)];
     res.json({ funfact: fact });
   };
+  
   
   const findState = (code) => statesData.find(s => s.code === code.toUpperCase());
 
@@ -74,6 +83,11 @@ const getAdmission = (req, res) => {
 
 const postFunFacts = async (req, res) => {
     const code = req.params.state.toUpperCase();
+  
+    if (!isValidStateCode(code)) {
+      return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
+    }
+  
     const { funfacts } = req.body;
   
     if (!Array.isArray(funfacts)) {
@@ -92,8 +106,14 @@ const postFunFacts = async (req, res) => {
     res.json(state);
   };
   
+  
   const patchFunFact = async (req, res) => {
     const code = req.params.state.toUpperCase();
+  
+    if (!isValidStateCode(code)) {
+      return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
+    }
+  
     const { index, funfact } = req.body;
   
     if (!index || !funfact) {
@@ -110,8 +130,14 @@ const postFunFacts = async (req, res) => {
     res.json(state);
   };
   
+  
   const deleteFunFact = async (req, res) => {
     const code = req.params.state.toUpperCase();
+  
+    if (!isValidStateCode(code)) {
+      return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
+    }
+  
     const { index } = req.body;
   
     if (!index) {
@@ -127,6 +153,7 @@ const postFunFacts = async (req, res) => {
     await state.save();
     res.json(state);
   };
+  
   
 
   module.exports = {
