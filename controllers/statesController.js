@@ -29,14 +29,27 @@ const getAllStates = async (req, res) => {
   res.json(states);
 };
 
-const getState = async (req, res) => {
+/*const getState = async (req, res) => {
   const code = req.params.state.toUpperCase();
   const states = await getMergedStateData();
   const state = states.find(s => s.code === code);
 
   if (!state) return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
   res.json(state);
-};
+};*/
+
+const getState = async (req, res) => {
+    const code = req.params.state.toUpperCase();
+  
+    if (!isValidStateCode(code)) {
+      return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
+    }
+  
+    const states = await getMergedStateData();
+    const state = states.find(s => s.code === code);
+    res.json(state);
+  };
+  
 
 const getRandomFunFact = async (req, res) => {
   const code = req.params.state.toUpperCase();
