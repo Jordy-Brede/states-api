@@ -86,20 +86,14 @@ const getNickname = (req, res) => {
 
 
 const getPopulation = (req, res) => {
-    const code = req.params.state.toUpperCase();
-    if (!isValidStateCode(code)) {
-      return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
-    }
-  
-    const state = findState(code);
-    const formattedPopulation = Number(state.population).toLocaleString();
-  
-    res.json({
-      state: state.state,
-      population: formattedPopulation
-    });
-  };
-  
+  const code = req.params.state.toUpperCase();
+  if (!isValidStateCode(code)) {
+    return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
+  }
+
+  const state = findState(code);
+  res.json({ state: state.state, population: state.population });
+};
 
 
 const getAdmission = (req, res) => {
