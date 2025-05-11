@@ -44,23 +44,23 @@ const getState = async (req, res) => {
 
 
 const getRandomFunFact = async (req, res) => {
-    const code = req.params.state.toUpperCase();
-  
-    if (!isValidStateCode(code)) {
-      return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
-    }
-  
-    const dbState = await State.findOne({ stateCode: code });
-  
-    if (!dbState || !dbState.funfacts || dbState.funfacts.length === 0) {
-      const state = findState(code);
-      return res.status(404).json({ message: `No Fun Facts found for ${state.state}` });
-    }
-  
-    const fact = dbState.funfacts[Math.floor(Math.random() * dbState.funfacts.length)];
-    res.json({ funfact: fact });
-  };
-  
+  const code = req.params.state.toUpperCase();
+
+  if (!isValidStateCode(code)) {
+    return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
+  }
+
+  const dbState = await State.findOne({ stateCode: code });
+
+  if (!dbState || !dbState.funfacts || dbState.funfacts.length === 0) {
+    const state = findState(code);
+    return res.status(404).json({ message: `No Fun Facts found for ${state.state}` });
+  }
+
+  const fact = dbState.funfacts[Math.floor(Math.random() * dbState.funfacts.length)];
+  res.json({ funfact: fact });
+};
+
 
 
 const getCapital = (req, res) => {
@@ -86,14 +86,20 @@ const getNickname = (req, res) => {
 
 
 const getPopulation = (req, res) => {
-  const code = req.params.state.toUpperCase();
-  if (!isValidStateCode(code)) {
-    return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
-  }
-
-  const state = findState(code);
-  res.json({ state: state.state, population: state.population });
-};
+    const code = req.params.state.toUpperCase();
+    if (!isValidStateCode(code)) {
+      return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
+    }
+  
+    const state = findState(code);
+    const formattedPopulation = Number(state.population).toLocaleString();
+  
+    res.json({
+      state: state.state,
+      population: formattedPopulation
+    });
+  };
+  
 
 
 const getAdmission = (req, res) => {
