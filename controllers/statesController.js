@@ -173,12 +173,11 @@ const postFunFacts = async (req, res) => {
   
     const { funfacts } = req.body;
   
-    // ✅ FIRST check: missing funfacts key
     if (!funfacts) {
       return res.status(400).json({ message: 'State fun facts value required' });
     }
   
-    // ✅ THEN check: wrong format
+  
     if (!Array.isArray(funfacts)) {
       return res.status(400).json({ message: 'State fun facts value must be an array' });
     }
@@ -197,7 +196,7 @@ const postFunFacts = async (req, res) => {
   
 
 
-const patchFunFact = async (req, res) => {
+/*const patchFunFact = async (req, res) => {
   const code = req.params.state.toUpperCase();
   if (!isValidStateCode(code)) {
     return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
@@ -217,7 +216,34 @@ const patchFunFact = async (req, res) => {
   state.funfacts[index - 1] = funfact;
   await state.save();
   res.json(state);
-};
+};*/
+
+const patchFunFact = async (req, res) => {
+    const code = req.params.state.toUpperCase();
+    if (!isValidStateCode(code)) {
+      return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
+    }
+  
+    const { index, funfact } = req.body;
+  
+    if (!index) {
+      return res.status(400).json({ message: 'State fun fact index value required' });
+    }
+  
+    if (!funfact) {
+      return res.status(400).json({ message: 'State fun fact value required' });
+    }
+  
+    const state = await State.findOne({ stateCode: code });
+    if (!state || !state.funfacts || index < 1 || index > state.funfacts.length) {
+      return res.status(404).json({ message: 'No Fun Fact found at that index for the state' });
+    }
+  
+    state.funfacts[index - 1] = funfact;
+    await state.save();
+    res.json(state);
+  };
+  
 
 
 const deleteFunFact = async (req, res) => {
