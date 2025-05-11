@@ -140,7 +140,7 @@ const getAdmission = (req, res) => {
 };
 
 
-const postFunFacts = async (req, res) => {
+/*const postFunFacts = async (req, res) => {
   const code = req.params.state.toUpperCase();
   if (!isValidStateCode(code)) {
     return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
@@ -162,7 +162,39 @@ const postFunFacts = async (req, res) => {
 
   await state.save();
   res.json(state);
-};
+};*/
+
+const postFunFacts = async (req, res) => {
+    const code = req.params.state.toUpperCase();
+  
+    if (!isValidStateCode(code)) {
+      return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
+    }
+  
+    const { funfacts } = req.body;
+  
+    // ✅ FIRST check: missing funfacts key
+    if (!funfacts) {
+      return res.status(400).json({ message: 'State fun facts value required' });
+    }
+  
+    // ✅ THEN check: wrong format
+    if (!Array.isArray(funfacts)) {
+      return res.status(400).json({ message: 'State fun facts value must be an array' });
+    }
+  
+    let state = await State.findOne({ stateCode: code });
+  
+    if (state) {
+      state.funfacts.push(...funfacts);
+    } else {
+      state = new State({ stateCode: code, funfacts });
+    }
+  
+    await state.save();
+    res.json(state);
+  };
+  
 
 
 const patchFunFact = async (req, res) => {
