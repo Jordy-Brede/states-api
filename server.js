@@ -6,8 +6,6 @@ const statesRoutes = require('./routes/states');
 const errorHandler = require('./middleware/errorHandler');
 const cors = require('cors');
 
-
-
 dotenv.config();
 connectDB();
 
@@ -17,38 +15,34 @@ app.use(express.json());
 app.use('/states', statesRoutes);
 
 app.get('/', (req, res) => {
-    res.send(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>US States API</title>
-        </head>
-        <body>
-          <h1>Welcome to the US States API</h1>
-          <p>Use /states to access state data.</p>
-        </body>
-      </html>
-    `);
-  });
-  
-app.use('*', errorHandler);
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head><title>US States API</title></head>
+      <body>
+        <h1>Welcome to the US States API</h1>
+        <p>Use <code>/states</code> to access state data.</p>
+      </body>
+    </html>
+  `);
+});
 
+// 404 HTML fallback for unknown routes
 app.all('*', (req, res) => {
-    res.status(404).send(`
-      <!DOCTYPE html>
-      <html>
-        <head><title>404 - Not Found</title></head>
-        <body>
-          <h1>404 - Page Not Found</h1>
-          <p>The requested URL ${req.originalUrl} was not found on this server.</p>
-        </body>
-      </html>
-    `);
-  });
+  res.status(404).send(`
+    <!DOCTYPE html>
+    <html>
+      <head><title>404 - Not Found</title></head>
+      <body>
+        <h1>404 - Page Not Found</h1>
+        <p>The requested URL ${req.originalUrl} was not found on this server.</p>
+      </body>
+    </html>
+  `);
+});
+
+// (Optional) middleware for internal server errors, etc.
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
-
-  

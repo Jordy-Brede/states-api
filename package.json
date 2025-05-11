@@ -8,7 +8,7 @@
   },
   "name": "states-api",
   "version": "1.0.0",
-  "description": "[<img src=\"https://cdn.gomix.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix-button.svg\" width=\"163px\" />](https://glitch.com/edit/#!/import/github/Jordy-Brede/node-auth-api)",
+  "description": "[<img src=\"https://cdn.gomix.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix-button.svg\" width=\"163px\" />](https://glitch.com/edit/#!/import/github/Jordy-Brede/states-api)",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
