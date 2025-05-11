@@ -46,9 +46,7 @@ const getState = async (req, res) => {
 const getRandomFunFact = async (req, res) => {
   const code = req.params.state.toUpperCase();
   if (!isValidStateCode(code)) {
-    const state = findState(code);
-return res.status(404).json({ message: `No Fun Facts found for ${state.state}` });
-
+    return res.status(400).json({ error: 'Invalid state abbreviation parameter' });
   }
 
   const dbState = await State.findOne({ stateCode: code });
