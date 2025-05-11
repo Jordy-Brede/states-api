@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
   `);
 });
 
-// 404 HTML fallback for unknown routes
+
 app.all('*', (req, res) => {
   res.status(404).send(`
     <!DOCTYPE html>
@@ -41,7 +41,7 @@ app.all('*', (req, res) => {
   `);
 });
 
-// (Optional) middleware for internal server errors, etc.
+
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
