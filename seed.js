@@ -7,10 +7,10 @@ const seedStates = async () => {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('MongoDB connected');
 
-    // Optional: clear existing data
+    
     await State.deleteMany({});
 
-    // Seed fun facts for specific states
+   
     await State.insertMany([
       {
         stateCode: 'KS',
